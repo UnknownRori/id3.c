@@ -107,8 +107,8 @@ static void print_dataset(
     printf("label: %s (%d)\n", COFFEE_LABEL_NAME[dataset->label], dataset->label);
     printf("| raw     : {%d, %d, %d}\n", temp, guest_count, weather);
     printf("| temp    : %s\n", TEMP_LABEL_NAME[temp]);
-    printf("| guest   : %s\n", TEMP_LABEL_NAME[guest_count]);
-    printf("| weather : %s\n", TEMP_LABEL_NAME[weather]);
+    printf("| guest   : %s\n", GUEST_COUNT_LABEL_NAME[guest_count]);
+    printf("| weather : %s\n", WEATHER_LABEL_NAME[weather]);
 }
 
 static void free_dataset(
