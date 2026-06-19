@@ -56,18 +56,27 @@ static void free_dataset(
 int main()
 {
     rid3_Dataset datasets[] = {
-        make_dataset(0, LOW , NORMAL, LOW   ),
-        make_dataset(1, HIGH, NORMAL, NORMAL),
+        make_dataset(0, LOW     , NORMAL    , LOW   ),
+        make_dataset(1, HIGH    , NORMAL    , NORMAL),
+        make_dataset(3, LOW     , HIGH      , HIGH  ),
+        make_dataset(2, NORMAL  , HIGH      , HIGH  ),
+        make_dataset(4, LOW     , LOW       , LOW   ),
+        make_dataset(2, HIGH    , HIGH      , HIGH  ),
     };
 
     printf("total datasets: %zu\n", ARR_LEN(datasets));
-    print_dataset(&datasets[0]);
-    print_dataset(&datasets[1]);
-
     rid3_Node* root = rid3_build_decision_tree(datasets, ARR_LEN(datasets));
 
     rid3_Dataset prompt = make_dataset(-1, HIGH, HIGH, HIGH);
-    rid3_traverse_tree(root, prompt);
+    RORI_ID3_LABEL_TYPE recommended = rid3_traverse_tree(root, prompt);
+
+    printf("resulting recommendation: %s (%d)", COFFEE_LABEL_NAME[recommended], recommended);
+
+    // Free it like a good practice although OS already clean up after this so
+    // whatever
+    for (size_t i = 0; i < ARR_LEN(datasets); i++) {
+        free_dataset(&datasets[i]);
+    }
     return 0;
 }
 
