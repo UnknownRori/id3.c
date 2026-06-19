@@ -53,6 +53,28 @@ RORI_ID3_LABEL_TYPE rid3_traverse_tree(
     return RORI_ID3_LABEL_NOT_FOUND; // Not found or invalid
 }
 
+void rid3_free_tree(
+    rid3_Node* tree
+) {
+    if (tree == NULL) return;
+
+    if (!tree->is_leaf) {
+        
+        for (size_t i = 0; i < tree->child_count; i++) {
+            rid3_free_tree(tree->child[i]);
+        }
+        
+        if (tree->edge_values != NULL) {
+            RORI_ID3_FREE(tree->edge_values);
+        }
+        if (tree->child != NULL) {
+            RORI_ID3_FREE(tree->child);
+        }
+    }
+
+    RORI_ID3_FREE(tree);
+}
+
 /////////////////
 // Internal defs
 /////////////////

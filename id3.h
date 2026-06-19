@@ -60,6 +60,9 @@ rid3_Node* rid3_build_decision_tree(
     rid3_Dataset* datasets,
     size_t        datasets_len
 );
+void rid3_free_tree(
+    rid3_Node* tree
+);
 
 RORI_ID3_LABEL_TYPE rid3_traverse_tree(
     rid3_Node*    tree,
