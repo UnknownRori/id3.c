@@ -72,8 +72,8 @@ int main()
 
     printf("resulting recommendation: %s (%d)", COFFEE_LABEL_NAME[recommended], recommended);
 
-    // Free it like a good practice although OS already clean up after this so
-    // whatever
+    // Free it like a good practice although OS already clean up after this so whatever
+    rid3_free_tree(root);
     for (size_t i = 0; i < ARR_LEN(datasets); i++) {
         free_dataset(&datasets[i]);
     }
