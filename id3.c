@@ -149,32 +149,47 @@ static float calculate_information_gain(rid3_Dataset* datasets, size_t len, RORI
             unique_count++;
         }
     }
+    rid3_Dataset* subset_buffer = (rid3_Dataset*)RORI_ID3_CALLOC(len, sizeof(rid3_Dataset));
+    size_t* insert_indices = (size_t*)RORI_ID3_CALLOC(unique_count, sizeof(size_t));
+    size_t current_offset = 0;
+    
+    for (size_t v = 0; v < unique_count; v++) {
+        insert_indices[v] = current_offset;
+        current_offset += val_counts[v];
+    }
+
+    for (size_t i = 0; i < len; i++) {
+        RORI_ID3_ATTRIBUTE_TYPE current_val = datasets[i].values[attr_idx];
+        
+        for (size_t v = 0; v < unique_count; v++) {
+            if (unique_vals[v] == current_val) {
+                size_t insert_pos = insert_indices[v]++; 
+                subset_buffer[insert_pos] = datasets[i];
+                break;
+            }
+        }
+    }
+
     float weighted_subset_entropy = 0.0f;
+    size_t read_offset = 0;
 
     for (size_t v = 0; v < unique_count; v++) {
         size_t subset_size = val_counts[v];
-        RORI_ID3_ATTRIBUTE_TYPE target_val = unique_vals[v];
-
-        // TODO : A bit bad to allocate memory space in each iteration
-        rid3_Dataset* subset = (rid3_Dataset*)RORI_ID3_CALLOC(subset_size, sizeof(rid3_Dataset));
-        size_t subset_idx = 0;
-
-        for (size_t i = 0; i < len; i++) {
-            if (datasets[i].values[attr_idx] == target_val) {
-                subset[subset_idx++] = datasets[i];
-            }
-        }
-
-        float sub_entropy = calculate_entropy(subset, subset_size);
-
+        
+        rid3_Dataset* subset_ptr = &subset_buffer[read_offset];
+        
+        float sub_entropy = calculate_entropy(subset_ptr, subset_size);
         float weight = (float)subset_size / (float)len;
         weighted_subset_entropy += weight * sub_entropy;
 
-        RORI_ID3_FREE(subset);
+        read_offset += subset_size;
     }
 
+    RORI_ID3_FREE(subset_buffer);
+    RORI_ID3_FREE(insert_indices);
     RORI_ID3_FREE(unique_vals);
     RORI_ID3_FREE(val_counts);
+
     return base_entropy - weighted_subset_entropy;
 }
 
