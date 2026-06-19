@@ -52,7 +52,7 @@ typedef struct rid3_Node {
 
     RORI_ID3_LABEL_TYPE attr_idx;
     RORI_ID3_ATTRIBUTE_TYPE* edge_values;
-    struct rid3_Node* child;
+    struct rid3_Node** child;
     size_t child_count;
 } rid3_Node;
 
