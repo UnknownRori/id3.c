@@ -36,8 +36,8 @@ static float calculate_entropy(rid3_Dataset* datasets, size_t len)
     if (datasets == NULL || len == 0) return 0.0f;
     float entropy = 0.0f;
 
-    RORI_ID3_LABEL_TYPE* unique_labels = (RORI_ID3_LABEL_TYPE*)malloc(len * sizeof(RORI_ID3_LABEL_TYPE));
-    size_t* counts = (size_t*)malloc(len * sizeof(size_t));
+    RORI_ID3_LABEL_TYPE* unique_labels = (RORI_ID3_LABEL_TYPE*)RORI_ID3_CALLOC(len, sizeof(RORI_ID3_LABEL_TYPE));
+    size_t* counts = (size_t*)RORI_ID3_CALLOC(len, sizeof(size_t));
     size_t unique_count = 0;
 
     for (size_t i = 0; i < len; i++) {
@@ -66,8 +66,8 @@ static float calculate_entropy(rid3_Dataset* datasets, size_t len)
         entropy -= probability * log2f(probability); 
     }
 
-    free(unique_labels);
-    free(counts);
+    RORI_ID3_FREE(unique_labels);
+    RORI_ID3_FREE(counts);
 
     return entropy;
 }
