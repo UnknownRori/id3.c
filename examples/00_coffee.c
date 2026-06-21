@@ -86,7 +86,7 @@ static rid3_Dataset make_dataset(
     RORI_ID3_ATTRIBUTE_TYPE guest_count,
     RORI_ID3_ATTRIBUTE_TYPE weather
 ) {
-    RORI_ID3_ATTRIBUTE_TYPE* attributes = malloc(sizeof(RORI_ID3_ATTRIBUTE_TYPE) * 3);
+    RORI_ID3_ATTRIBUTE_TYPE* attributes = (RORI_ID3_ATTRIBUTE_TYPE*)malloc(sizeof(RORI_ID3_ATTRIBUTE_TYPE) * 3);
     attributes[0] = temp;
     attributes[1] = guest_count;
     attributes[2] = weather;
