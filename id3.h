@@ -56,6 +56,10 @@ typedef struct rid3_Node {
     size_t child_count;
 } rid3_Node;
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 rid3_Node* rid3_build_decision_tree(
     rid3_Dataset* datasets,
     size_t        datasets_len
@@ -68,5 +72,9 @@ RORI_ID3_LABEL_TYPE rid3_traverse_tree(
     rid3_Node*    tree,
     rid3_Dataset  request
 );
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif  // RORI_ID3_H
